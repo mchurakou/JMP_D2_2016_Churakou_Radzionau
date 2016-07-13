@@ -11,38 +11,31 @@ import com.epam.jmp.dr.task1.calculator.operators.SumOperator;
  *
  */
 
-//Violation of YAGNI principle - Factory is not required
+// Violation of YAGNI principle - Factory is not required
 public class OperatorsFactory {
-	
+
 	/**
-	 * Method instaniates and returns Operator object dependent of operatorType string
+	 * Method instaniates and returns Operator object dependent of operatorType
+	 * string
+	 * 
 	 * @param operatorType
 	 * @return
 	 */
-	public Operator getOperator(String operatorType)
-	{
-		if(operatorType == null)
-		{
+	public Operator getOperator(String operatorType) {
+		if (operatorType == null) {
 			return null;
 		}
-		
-		if(operatorType.equals("SUM"))
-		{
+
+		if (operatorType.equals("SUM")) {
 			return new SumOperator();
-		}
-		else if(operatorType.equals("DIFF"))
-		{
+		} else if (operatorType.equals("DIFF")) {
 			return new DiffOperator();
-		}
-		else if(operatorType.equals("MUL"))
-		{
+		} else if (operatorType.equals("MUL")) {
 			return new MulOperator();
-		}
-		else if(operatorType.equals("DIV"))
-		{
+		} else if (operatorType.equals("DIV")) {
 			return new DivOperator();
 		}
-		
+
 		return null;
 	}
 
