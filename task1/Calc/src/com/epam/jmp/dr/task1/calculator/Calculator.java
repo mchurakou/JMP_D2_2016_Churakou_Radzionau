@@ -3,12 +3,8 @@ package com.epam.jmp.dr.task1.calculator;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.epam.jmp.dr.task1.calculator.expression.ExpressionResolver;
-import com.epam.jmp.dr.task1.calculator.operators.Operator;
-import com.epam.jmp.dr.task1.calculator.util.OperatorsContainer;
 
 
 /**

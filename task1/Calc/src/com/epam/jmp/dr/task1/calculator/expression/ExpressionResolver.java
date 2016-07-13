@@ -4,7 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.epam.jmp.dr.task1.calculator.operators.Operator;
-import com.epam.jmp.dr.task1.calculator.util.OperatorsContainer;
 
 public class ExpressionResolver {
 	
@@ -19,8 +18,7 @@ public class ExpressionResolver {
 	{
 		String trimmedStr = strExpr.replaceAll(" ", "");
 		
-		Operator[] operators = OperatorsContainer.getInstance().getAvailableOperators();
-		for(Operator operator : operators)
+		for(Operator operator : Operator.getOperatorsByPriority())
 		{
 			String regex = operator.getExpression();
 			Pattern pattern = Pattern.compile(regex);
@@ -29,7 +27,7 @@ public class ExpressionResolver {
 			while(matcher.find())
 			{
 				matchedString = matcher.group();
-				float result = operator.evaluate(matchedString);
+				float result = evaluateSingleOperatorExpression(matchedString, operator);
 				if(matchedString.equals(trimmedStr))
 				{
 					return result;
@@ -43,6 +41,28 @@ public class ExpressionResolver {
 		}
 		
 		throw new UnsupportedOperationException();
+	}
+	
+	//Fix for violation of DRY and SRP principles
+	/**
+	 * Returns float result of given expression for specific operator
+	 * @param expression
+	 * @param operator
+	 * @return
+	 */
+	public static float evaluateSingleOperatorExpression(String expression, Operator operator)
+	{
+		Matcher matcher = operator.getPattern().matcher(expression);
+		
+		matcher.find();
+		
+		String leftOperandStr = matcher.group(1);
+		String rightOperandStr = matcher.group(2);
+		
+		float leftOperand = Float.parseFloat(leftOperandStr);
+		float rightOperand = Float.parseFloat(rightOperandStr);
+		
+		return operator.makeOperation(leftOperand, rightOperand);
 	}
 
 }
