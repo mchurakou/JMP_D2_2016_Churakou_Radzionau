@@ -5,14 +5,12 @@ import java.util.regex.Pattern;
 
 import com.epam.jmp.dr.task1.calculator.util.OperatorUtil;
 
-
 /**
  * 
  * Implementation of "multiplication" operator
  *
  */
 public class MulOperator implements Operator {
-
 
 	@Override
 	public String getExpression() {
@@ -21,49 +19,46 @@ public class MulOperator implements Operator {
 
 	@Override
 	public int getPriority() {
-		//Violation of OCP (open/closed principle)
+		// Violation of OCP (open/closed principle)
 		return OperatorUtil.getPriority(this);
 	}
-	
-	//Violation of DRY principle
+
+	// Violation of DRY principle
 	/**
 	 * Compares two operators based on their priority
 	 */
 	@Override
 	public int compareTo(Operator arg0) {
-		if(arg0 == this)
-		{
+		if (arg0 == this) {
 			return 0;
 		}
-		if(arg0.getPriority() > this.getPriority())
-		{
+		if (arg0.getPriority() > this.getPriority()) {
 			return 1;
 		}
-		if(arg0.getPriority() < this.getPriority())
-		{
+		if (arg0.getPriority() < this.getPriority()) {
 			return -1;
 		}
 		return 0;
 	}
-	
-	//Violation of DRY principle
-	
+
+	// Violation of DRY principle
+
 	@Override
 	public float evaluate(String expression) {
 		String regex = getExpression();
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(expression);
-		
+
 		matcher.find();
-		
+
 		String leftOperandStr = matcher.group(1);
 		String rightOperandStr = matcher.group(2);
-		
+
 		float leftOperand = Float.parseFloat(leftOperandStr);
 		float rightOperand = Float.parseFloat(rightOperandStr);
-		
+
 		return leftOperand * rightOperand;
-		
+
 	}
 
 }

@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.regex.Pattern;
 
 public enum Operator {
-	
+
 	/**
 	 * Sum operator
 	 */
@@ -13,8 +13,7 @@ public enum Operator {
 		/**
 		 * implementation of abstract function makeOperation
 		 */
-		public float makeOperation(float leftOperand, float rightOperand)
-		{
+		public float makeOperation(float leftOperand, float rightOperand) {
 			return leftOperand + rightOperand;
 		}
 	},
@@ -25,38 +24,33 @@ public enum Operator {
 		/**
 		 * implementation of abstract function makeOperation
 		 */
-		public float makeOperation(float leftOperand, float rightOperand)
-		{
+		public float makeOperation(float leftOperand, float rightOperand) {
 			return leftOperand - rightOperand;
 		}
 	},
 	/**
 	 * Division operator
 	 */
-	DIV("(\\d+\\.*\\d*)/(\\d+\\.*\\d*)", 2)
-	{
+	DIV("(\\d+\\.*\\d*)/(\\d+\\.*\\d*)", 2) {
 		/**
 		 * implementation of abstract function makeOperation
 		 */
-		public float makeOperation(float leftOperand, float rightOperand)
-		{
+		public float makeOperation(float leftOperand, float rightOperand) {
 			return leftOperand / rightOperand;
 		}
 	},
 	/**
 	 * Multiplication operator
 	 */
-	MUL("(\\d+\\.*\\d*)\\*(\\d+\\.*\\d*)", 2)
-	{
+	MUL("(\\d+\\.*\\d*)\\*(\\d+\\.*\\d*)", 2) {
 		/**
 		 * implementation of abstract function makeOperation
 		 */
-		public float makeOperation(float leftOperand, float rightOperand)
-		{
+		public float makeOperation(float leftOperand, float rightOperand) {
 			return leftOperand * rightOperand;
 		}
 	};
-	
+
 	/**
 	 * regular expression pattern
 	 */
@@ -69,65 +63,68 @@ public enum Operator {
 	 * regex string of operator expression
 	 */
 	private final String expression;
-	
+
 	/**
 	 * Constructor
-	 * @param regex operator regular expression
-	 * @param priority operator priority
+	 * 
+	 * @param regex
+	 *            operator regular expression
+	 * @param priority
+	 *            operator priority
 	 */
-	Operator(String regex, int priority)
-	{
+	Operator(String regex, int priority) {
 		this.expression = regex;
 		this.pattern = Pattern.compile(regex);
 		this.priority = priority;
 	}
-	
-	//Fix for violation of DRY principle
+
+	// Fix for violation of DRY principle
 	/**
 	 * Returns result of operation on two operands
+	 * 
 	 * @param leftOperand
 	 * @param rightOperand
 	 * @return
 	 */
 	public abstract float makeOperation(float leftOperand, float rightOperand);
-	
-	
-	//Fix of violation of YAGNI principle 
+
+	// Fix of violation of YAGNI principle
 	/**
 	 * Returns array of available operators, sorted by priority
+	 * 
 	 * @return array of available operators, sorted by priority
 	 */
-	public static Operator[] getOperatorsByPriority()
-	{
+	public static Operator[] getOperatorsByPriority() {
 		Operator[] result = values();
 		Arrays.sort(result, Comparator.comparing(Operator::getPriority).reversed());
 		return result;
 	}
-	
+
 	/**
 	 * Returns operator priority
+	 * 
 	 * @return operator priority
 	 */
-	public int getPriority()
-	{
+	public int getPriority() {
 		return priority;
 	}
-	
+
 	/**
 	 * Returns operator expression
+	 * 
 	 * @return operator expression
 	 */
 	public String getExpression() {
 		return expression;
 	}
-	
+
 	/**
 	 * Returns operator pattern
+	 * 
 	 * @return operator pattern
 	 */
-	public Pattern getPattern()
-	{
+	public Pattern getPattern() {
 		return pattern;
 	}
-	
+
 }

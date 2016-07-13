@@ -19,32 +19,33 @@ public class Calculator {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 	            System.in));
 
-		while(true)
-		{
-		    System.out.println("Type some expression. Supported operations: '+ - / *'. Brackets are not supported. Type 'exit' to exit programm");
+		while (true) {
+		    System.out.println("Type some expression. Supported operations: '+ - / *'.\n"
+		    		+ "Brackets are not supported. Type 'exit' to exit programm");
+		    
 		    String str = "";
+		    
 			try {
 				str = reader.readLine();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			if(str.equals("exit"))
-			{
+			
+			if (str.equals("exit")) {
 				break;
 			}
+			
 			float result = 0;
-			try
-			{
+			
+			try {
 				result = ExpressionResolver.resolve(str);
 			}
-			catch(UnsupportedOperationException e)
-			{
+			catch (UnsupportedOperationException e) {
 				System.err.println("Sorry, this operation is not supported");
 			}
+			
 			System.out.println(str + " = " + result);
-		}
-		
-	}
-	
+		}		
+	}	
 
 }
