@@ -13,7 +13,7 @@ public class Superman {
 		amountOfSavedPeople = 100;
 	}
 
-	public static Superman getInstance() {
+	public static synchronized Superman getInstance() {
 		if (instance == null) {
 			instance = new Superman();
 		}

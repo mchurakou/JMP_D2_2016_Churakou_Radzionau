@@ -47,50 +47,45 @@ public class Runner {
 		factory = FactoryProducer.getFactory(handlerType);
 		Handler handler = null;
 
-		boolean handlerCreated = false;
-		do {
+		try {
+
 			String details = "";
 			switch (handlerType) {
 			case DB:
-				try {
-					System.out.println("Host: ");
-					userInput = reader.readLine();
-					details += userInput + ";";
 
-					System.out.println("Database name: ");
-					userInput = reader.readLine();
-					details += userInput + ";";
+				System.out.println("Host: ");
+				userInput = reader.readLine();
+				details += userInput + ";";
 
-					System.out.println("User: ");
-					userInput = reader.readLine();
-					details += userInput + ";";
+				System.out.println("Database name: ");
+				userInput = reader.readLine();
+				details += userInput + ";";
 
-					System.out.println("Passw: ");
-					userInput = reader.readLine();
-					details += userInput;
+				System.out.println("User: ");
+				userInput = reader.readLine();
+				details += userInput + ";";
 
-					handler = factory.createHandler(details);
-					handlerCreated = true;
-				} catch (Exception e) {
-					System.err.println("Please verify entered data, and try again");
-					e.printStackTrace();
-				}
+				System.out.println("Passw: ");
+				userInput = reader.readLine();
+				details += userInput;
+
+				handler = factory.createHandler(details);
 				break;
 
 			case FILE:
-				try {
-					System.out.println("File name: ");
-					userInput = reader.readLine();
-					handler = factory.createHandler(userInput);
-					handlerCreated = true;
-				} catch (Exception e) {
-					System.err.println("Please verify entered data, and try again");
-					e.printStackTrace();
-				}
+
+				System.out.println("File name: ");
+				userInput = reader.readLine();
+				handler = factory.createHandler(userInput);
+
 				break;
 			}
 
-		} while (!handlerCreated);
+		} catch (Exception e) {
+			System.err.println("Please verify entered data");
+			e.printStackTrace();
+			return;
+		}
 
 		boolean exit = false;
 
