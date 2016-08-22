@@ -2,8 +2,11 @@ package com.epam.jmp.dr.task6.operation.involutionAdaper;
 
 import com.epam.jmp.dr.task6.operation.SqrOperator;
 
-//Adapter pattern
-
+/// Adapter pattern
+/**
+ * InvolutionAdapterImp class
+ *
+ */
 public class InvolutionAdapterImp extends SqrOperator implements InvolutionAdapter {
 
 	@Override
