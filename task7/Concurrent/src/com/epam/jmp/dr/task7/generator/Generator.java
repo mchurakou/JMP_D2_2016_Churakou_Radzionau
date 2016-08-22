@@ -1,21 +1,34 @@
 package com.epam.jmp.dr.task7.generator;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Generator {
 	
 	private static int counter = 0;
 	
-	private static Lock lock = new ReentrantLock();
+	private static int maxCount = 0;
 	
-	public static int getValue()
+	//private static Lock lock = new ReentrantLock();
+	
+	public static void setMaxCount(int value)
 	{
-		lock.lock();
-		++counter;
-		lock.unlock();
-		return counter;
+		maxCount = value;
+	}
+	
+	
+	public static synchronized int getValue()
+	{
+		counter++;
+		if(counter <= maxCount)
+		{
+			return counter;
+		}
+		return -1;
 		
+	}
+	
+	public static boolean isStopped()
+	{
+		return counter > maxCount;
 	}
 
 }

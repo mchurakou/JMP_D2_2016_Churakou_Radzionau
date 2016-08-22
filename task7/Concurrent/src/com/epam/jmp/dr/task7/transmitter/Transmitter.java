@@ -16,6 +16,7 @@ public class Transmitter {
 	public static int get() throws InterruptedException
 	{
 		return q.poll(8, TimeUnit.SECONDS);
+		//return q.take();
 	}
 
 }
