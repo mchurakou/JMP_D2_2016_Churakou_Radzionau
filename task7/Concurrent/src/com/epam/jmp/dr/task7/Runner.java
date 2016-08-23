@@ -1,7 +1,9 @@
 package com.epam.jmp.dr.task7;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -49,6 +51,7 @@ public class Runner {
 		
 		Runnable consumer = () -> {
 			int sleepTime = (new Random()).nextInt(5) + 1;
+			Map<Integer,String> handledValues = new HashMap<>();
 			
 			while(!Generator.isStopped())
 			{
@@ -58,9 +61,17 @@ public class Runner {
 					if(value != null)
 					{
 						String result = value + " - number was handled";
-						while(FileWriter.getCurrCounter() != value) {}
-						FileWriter.write(result);
-						//System.out.println(result);
+						handledValues.put(value, result);
+						while(handledValues.keySet().iterator().hasNext())
+						{
+							Integer i = handledValues.keySet().iterator().next();
+							if(FileWriter.getCurrCounter() == i)
+							{
+								FileWriter.write(handledValues.get(i));
+								handledValues.remove(i);
+							}
+						}
+										
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -69,6 +80,8 @@ public class Runner {
 				}
 				
 			}
+			
+			
 			
 			System.out.println(Thread.currentThread().getName() +  " Done!");
 		};
