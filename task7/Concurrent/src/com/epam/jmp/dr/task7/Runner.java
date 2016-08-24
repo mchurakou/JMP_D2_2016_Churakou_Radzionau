@@ -1,105 +1,75 @@
 package com.epam.jmp.dr.task7;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.Callable;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
-import com.epam.jmp.dr.task7.consumer.Consumer;
-import com.epam.jmp.dr.task7.fileWriter.FileWriter;
+import org.apache.logging.log4j.LogManager;
+
 import com.epam.jmp.dr.task7.generator.Generator;
-import com.epam.jmp.dr.task7.producer.ProducersContainer;
-import com.epam.jmp.dr.task7.transmitter.Transmitter;
+import com.epam.jmp.dr.task7.tasks.Consumer;
+import com.epam.jmp.dr.task7.tasks.Producer;
+import com.epam.jmp.dr.task7.tasks.WorkflowController;
 
 public class Runner {
 
-	public static void main(String[] args) throws InterruptedException {
-		
-		int producersAmount = 10;
-		int consumersAmount = 15;
-		
-		Generator.setMaxCount(100);
-		
-		Runnable producer = () -> {
-			
-			int sleepTime = (new Random()).nextInt(5) + 1;
-			int value = -1;
-			
-			while((value = Generator.getValue()) > 0)
-			{
-				try {
-					TimeUnit.SECONDS.sleep(sleepTime);
-					Transmitter.put(value);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return;
-				}
-				
-				
-				//System.out.println(Thread.currentThread().getName() +  " val: " + value);
-			}
-			
-			//System.out.println(Thread.currentThread().getName() +  " Done!");
-			
-		};
-		
-		Runnable consumer = () -> {
-			int sleepTime = (new Random()).nextInt(5) + 1;
-			Map<Integer,String> handledValues = new HashMap<>();
-			
-			while(!Generator.isStopped())
-			{
-				try {
-					TimeUnit.SECONDS.sleep(sleepTime);
-					Integer value = Transmitter.get();
-					if(value != null)
-					{
-						String result = value + " - number was handled";
-						handledValues.put(value, result);
-						while(handledValues.keySet().iterator().hasNext())
-						{
-							Integer i = handledValues.keySet().iterator().next();
-							if(FileWriter.getCurrCounter() == i)
-							{
-								FileWriter.write(handledValues.get(i));
-								handledValues.remove(i);
-							}
-						}
-										
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return;
-				}
-				
-			}
-			
-			
-			
-			System.out.println(Thread.currentThread().getName() +  " Done!");
-		};
-		
+	public static void main(String[] args) {
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+		String producersAmountStr = "";
+		String consumersAmountStr = "";
+		String generatorMaxCountStr = "";
+
+		try {
+			System.out.println("Enter number of producer threads: ");
+			producersAmountStr = reader.readLine();
+			System.out.println("Enter number of consumer threads: ");
+			consumersAmountStr = reader.readLine();
+			System.out.println("Enter generator max count: ");
+			generatorMaxCountStr = reader.readLine();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		int producersAmount = Integer.valueOf(producersAmountStr);
+		int consumersAmount = Integer.valueOf(consumersAmountStr);
+		int generatorMaxCount = Integer.valueOf(generatorMaxCountStr);
+
+		LogManager.getRootLogger().debug("////////////////////////////////////////////////");
+		LogManager.getRootLogger().debug("WORK STARTED");
+
+		System.out.println("Please wait...");
+
+		Generator.setMaxCount(generatorMaxCount);
+
+		WorkflowController controller = new WorkflowController();
+		CountDownLatch producerLatch = new CountDownLatch(producersAmount);
+		CountDownLatch consumerLatch = new CountDownLatch(consumersAmount);
+
 		ExecutorService executor = Executors.newFixedThreadPool(producersAmount + consumersAmount);
-		for(int i = 0; i < producersAmount; i++)
-		{
-			executor.submit(producer);
+		for (int i = 0; i < producersAmount; i++) {
+			executor.submit(new Producer(producerLatch));
 		}
-		
-		for(int i = 0; i < consumersAmount; i++)
-		{
-			executor.submit(consumer);
+
+		for (int i = 0; i < consumersAmount; i++) {
+			executor.submit(new Consumer(controller, consumerLatch));
 		}
-		
+
+		try {
+			producerLatch.await();
+			controller.setGenerationStopped();
+			System.out.println("All Producers are stopped");
+			consumerLatch.await();
+			System.out.println("Work is done!");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		executor.shutdown();
-		
-		
 
 	}
 
