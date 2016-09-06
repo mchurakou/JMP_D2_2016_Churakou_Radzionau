@@ -1,0 +1,50 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+ 
+ 	<context:annotation-config/>
+ 	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>bean_a.properties</value>
+		</property>
+	</bean>
+ 	
+	<bean id="BeanA" class="com.epam.jmp.dr.task9.beans.BeanA">
+		<property name="property1" value="${beanA.prop1}" />
+		<property name="property2" value="${beanA.prop2}" />
+		<property name="property3" value="${beanA.prop3}" />
+	</bean>
+	
+	<bean id="BeanB" class="com.epam.jmp.dr.task9.beans.BeanB">
+		<constructor-arg index="0" ref="BeanA" />
+	</bean>
+	
+	<bean id="BeanD" class="com.epam.jmp.dr.task9.beans.BeanD" scope="prototype"/>
+	
+	<bean id="BeanCMethodInjection" class="com.epam.jmp.dr.task9.beans.BeanCMethodInjection">
+		<lookup-method name="getBeanD" bean="BeanD"/>
+	</bean>
+	
+	<bean id="BeanCSetter" class="com.epam.jmp.dr.task9.beans.BeanCSetter">
+		<property name="beanD">
+			<ref bean="BeanD"/>
+		</property>
+	</bean>
+	
+	<bean id="BeanEMethodReplacer" class="com.epam.jmp.dr.task9.beans.BeanEMethodReplacer"/>
+	
+	<bean id="BeanEMReplaced" class="com.epam.jmp.dr.task9.beans.BeanE">
+		<replaced-method name="getString" replacer="BeanEMethodReplacer"/>
+	</bean>
+	
+	<bean id="BeanEOriginal" class="com.epam.jmp.dr.task9.beans.BeanE"/>
+	
+	<bean id="BeanF" class="com.epam.jmp.dr.task9.beans.BeanF" lazy-init="true" init-method="init" destroy-method="destroyBean">
+		<property name="prop" value="BEAN_F_PROP" />
+	</bean>
+	
+</beans>
