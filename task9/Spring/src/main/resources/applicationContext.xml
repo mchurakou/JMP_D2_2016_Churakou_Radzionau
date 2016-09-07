@@ -27,7 +27,7 @@
 	
 	<bean id="BeanCMethodInjection" class="com.epam.jmp.dr.task9.beans.BeanCMethodInjection">
 		<lookup-method name="getBeanD" bean="BeanD"/>
-	</bean>
+	</bean>	
 	
 	<bean id="BeanCSetter" class="com.epam.jmp.dr.task9.beans.BeanCSetter">
 		<property name="beanD">
@@ -41,10 +41,13 @@
 		<replaced-method name="getString" replacer="BeanEMethodReplacer"/>
 	</bean>
 	
-	<bean id="BeanEOriginal" class="com.epam.jmp.dr.task9.beans.BeanE"/>
+	<bean id="BeanEOriginal" class="com.epam.jmp.dr.task9.beans.BeanE" />
 	
 	<bean id="BeanF" class="com.epam.jmp.dr.task9.beans.BeanF" lazy-init="true" init-method="init" destroy-method="destroyBean">
 		<property name="prop" value="BEAN_F_PROP" />
 	</bean>
+	
+	<bean id="BeanFPostProcessor" class="com.epam.jmp.dr.task9.beans.BeanFPostProcessor" />
+	
 	
 </beans>
