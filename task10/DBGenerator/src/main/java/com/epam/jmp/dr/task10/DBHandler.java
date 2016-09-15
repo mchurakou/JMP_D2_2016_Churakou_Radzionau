@@ -16,7 +16,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public class DBHandler {
@@ -77,73 +82,57 @@ public class DBHandler {
 			
 			ResultSet usersCountSet = countUsersStatement.executeQuery(GET_USERS_COUNT);
 			usersCountSet.first();
-			int usersCount = usersCountSet.getInt("users_count");			
+			int usersCount = usersCountSet.getInt("users_count");
+			countUsersStatement.close();
 			
-			for(int i = 0; i < 70000; i++)
+			Map<Integer, Set<Integer>> friendships = new HashMap<>();
+			
+			for(int userid1 = 1; userid1 <= usersCount; userid1++)
 			{
-				int userid1 = randBetween(1, usersCount);
-				int userid2 = randBetween(1, usersCount);
-				while(userid1 == userid2)
-				{
-					userid2 = randBetween(1, usersCount);
-				}
-				getUserFriendships.setInt(1, userid1);
-				ResultSet usersFriends = getUserFriendships.executeQuery();
-				List<Integer> friendsArray = new ArrayList<>();
-				while(usersFriends.next())
-				{
-					friendsArray.add(usersFriends.getInt("friend"));
-				}
-				if(friendsArray.isEmpty())
-				{
-					Timestamp timestamp = getRandomDate(2010, 2016);
-					insertFriendshipStatement.setInt(1, userid1);
-					insertFriendshipStatement.setInt(2, userid2);
-					insertFriendshipStatement.setTimestamp(3, timestamp);
-					insertFriendshipStatement.executeUpdate();
-					insertFriendshipStatement.setInt(1, userid2);
-					insertFriendshipStatement.setInt(2, userid1);
-					insertFriendshipStatement.setTimestamp(3, timestamp);
-					insertFriendshipStatement.executeUpdate();
-				}
-				else
-				{
-					boolean hasFriendshipithUser2 = false;
-					do
-					{
-						hasFriendshipithUser2 = false;
-						for(Integer usr2ID : friendsArray)
-						{
-							if(usr2ID == userid2)
-							{
-								userid2 = randBetween(1, usersCount);
-								while(userid1 == userid2)
-								{
-									userid2 = randBetween(1, usersCount);
-								}
-								hasFriendshipithUser2 = true;
-								break;
-							}
-						}
-						
-					} while(hasFriendshipithUser2);
-					
-					
-					Timestamp timestamp = getRandomDate(2010, 2016);
-					insertFriendshipStatement.setInt(1, userid1);
-					insertFriendshipStatement.setInt(2, userid2);
-					insertFriendshipStatement.setTimestamp(3, timestamp);
-					insertFriendshipStatement.executeUpdate();
-					insertFriendshipStatement.setInt(1, userid2);
-					insertFriendshipStatement.setInt(2, userid1);
-					insertFriendshipStatement.setTimestamp(3, timestamp);
-					insertFriendshipStatement.executeUpdate();
-				}
-				
+				friendships.put(userid1, new HashSet<Integer>());
 			}
 			
+			System.out.println("Adding friendships pairs...");
+			/// Adding friendships pairs
+			for(int userid1 = 1; userid1 <= usersCount; userid1++)
+			{
+				int friendsAmount = randBetween(50, 500);
+				for(int i = 0; i < friendsAmount; i++)
+				{
+					int userid2 = randBetween(1, usersCount);
+					while(userid1 == userid2)
+					{
+						userid2 = randBetween(1, usersCount);
+					}
+					friendships.get(userid1).add(userid2);
+					friendships.get(userid2).add(userid1);
+				}
+			}
+			
+			for (Map.Entry<Integer, Set<Integer>> entry : friendships.entrySet()) {
+				int user1 = entry.getKey();
+				Set<Integer> friends = entry.getValue();
+				for(Integer user2 : friends)
+				{
+					int u1 = user1;
+					int u2 = user2;
+					Timestamp timestamp = getRandomDate(2010, 2016);
+					
+					insertFriendshipStatement.setInt(1, u1);
+					insertFriendshipStatement.setInt(2, u2);
+					insertFriendshipStatement.setTimestamp(3, timestamp);
+					
+					insertFriendshipStatement.addBatch();
+				}
+			}
+			System.out.println("Adding friendships pairs...  Done");
+			
+			System.out.println("Trying to execute batch...");
+			insertFriendshipStatement.executeBatch();
+			System.out.println("Trying to execute batch...   Done");
+			
+			
 			getUserFriendships.close();
-			countUsersStatement.close();
 			insertFriendshipStatement.close();
 			conn.close();
 			
