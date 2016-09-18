@@ -9,6 +9,8 @@ public class Runner {
 		DBHandler.createTables();
 		DBHandler.generateUsers();
 		DBHandler.generateFriendships();
+		DBHandler.generatePosts();
+		DBHandler.generateLikes();
 	}
 
 }

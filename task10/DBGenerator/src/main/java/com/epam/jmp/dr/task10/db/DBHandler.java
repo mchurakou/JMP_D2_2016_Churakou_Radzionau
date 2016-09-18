@@ -1,7 +1,6 @@
-package com.epam.jmp.dr.task10;
+package com.epam.jmp.dr.task10.db;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,85 +10,65 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 public class DBHandler {
-
+	
 	private static String USER = "root";
 	private static String PASSWORD = "root";
 	private static String URL = "jdbc:mysql://localhost:3306/task10";
 	
-	private static String DROP_TABLES = "DROP TABLE IF EXISTS users, likes, friendships, posts;";
+	private Connection conn;
 	
-	private static String CREATE_USERS_TABLE = "CREATE TABLE users ("
-			+ "id INT NOT NULL AUTO_INCREMENT, "
-			+ "name VARCHAR(50) NOT NULL, "
-			+ "surname VARCHAR(50) NOT NULL, "
-			+ "birthdate DATE NOT NULL, "
-			+ "PRIMARY KEY (id), "
-			+ "UNIQUE INDEX id_UNIQUE (id ASC)"
-			+ ");";
+	public void init() {
+		conn = null;
+		try (Connection cn = DriverManager.getConnection(URL, USER, PASSWORD);) {
+			conn = cn;			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
-	private static String CREATE_FRIENDSHIPS_TABLE = "CREATE TABLE friendships ("
-			+ "userid1 INT NOT NULL, "
-			+ "userid2 INT NOT NULL, "
-			+ "timestamp TIMESTAMP NOT NULL, "
-			+ "PRIMARY KEY (userid1, userid2)"
-			+ ");";
+	public void close() {
+		if(conn != null)
+		{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
+	public void generateTables()
+	{
+		createTables();
+		generateUsers();
+		generateFriendships();
+		generatePosts();
+		generateLikes();
+	}
 	
-	private static String CREATE_POSTS_TABLE = "CREATE TABLE posts ("
-			+ "id INT NOT NULL AUTO_INCREMENT, "
-			+ "userId INT NOT NULL, "
-			+ "text VARCHAR(500) NOT NULL, "
-			+ "timestamp TIMESTAMP NOT NULL, "
-			+ "PRIMARY KEY (id), "
-			+ "UNIQUE INDEX id_UNIQUE (id ASC)"
-			+ ");";
-	
-	private static String CREATE_LIKES_TABLE = "CREATE TABLE likes ("
-			+ "postid INT NOT NULL, "
-			+ "userid INT NOT NULL, "
-			+ "timestamp TIMESTAMP NOT NULL, "
-			+ "PRIMARY KEY (postid, userid)"
-			+ ");";
-	
-	private static String INSERT_USER = "INSERT INTO users (name, surname, birthdate) VALUES(?, ?, ?);";
-	private static String INSERT_FRIENDSHIP = "INSERT INTO friendships values(?, ?, ?);";
-	private static String GET_USERS_COUNT = "SELECT COUNT(*) as users_count FROM users;";
-	private static String GET_USER_FRIENDSHIPS = "SELECT userid2 AS friend FROM friendships WHERE userid1 = ?;";
-	private static String INSERT_POST = "INSERT INTO posts(userId, text, timestamp) VALUES(?, ?, ?);";
-	private static String GET_POSTS_COUNT = "SELECT COUNT(*) as posts_count from posts;";
-	private static String GET_POST_TIMESTAMP = "SELECT timestamp FROM posts WHERE id = ?";
-	private static String INSERT_LIKE = "INSERT INTO likes VALUES(?, ?, ?);";
-	
-	
-	public static void generateLikes()
+	private void generateLikes()
 	{
 		System.out.println("Creating likes....");
 		
-		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+		try (
 				Statement count = conn.createStatement();
-				PreparedStatement postTimestampStmt = conn.prepareStatement(GET_POST_TIMESTAMP);
-				PreparedStatement insertLike = conn.prepareStatement(INSERT_LIKE);
+				PreparedStatement postTimestampStmt = conn.prepareStatement(Queries.GET_POST_TIMESTAMP.getQuery());
+				PreparedStatement insertLike = conn.prepareStatement(Queries.INSERT_LIKE.getQuery());
 				)
 		{
-			ResultSet usersCountSet = count.executeQuery(GET_USERS_COUNT);
+			ResultSet usersCountSet = count.executeQuery(Queries.GET_USERS_COUNT.getQuery());
 			usersCountSet.first();
 			int usersCount = usersCountSet.getInt("users_count");
 			
-			ResultSet postsCountSet = count.executeQuery(GET_POSTS_COUNT);
+			ResultSet postsCountSet = count.executeQuery(Queries.GET_POSTS_COUNT.getQuery());
 			postsCountSet.first();
 			int postsCount = postsCountSet.getInt("posts_count");
 			count.close();
@@ -153,15 +132,15 @@ public class DBHandler {
 		System.out.println("Creating likes.... Done");
 	}
 	
-	public static void generatePosts()
+	private void generatePosts()
 	{
 		System.out.println("Creating posts....");
 		
-		try(Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+		try(
 				Statement countUsersStatement = conn.createStatement();
-				PreparedStatement insertPost = conn.prepareStatement(INSERT_POST);
+				PreparedStatement insertPost = conn.prepareStatement(Queries.INSERT_POST.getQuery());
 				){
-			ResultSet usersCountSet = countUsersStatement.executeQuery(GET_USERS_COUNT);
+			ResultSet usersCountSet = countUsersStatement.executeQuery(Queries.GET_USERS_COUNT.getQuery());
 			usersCountSet.first();
 			int usersCount = usersCountSet.getInt("users_count");
 			countUsersStatement.close();
@@ -196,17 +175,17 @@ public class DBHandler {
 		System.out.println("Creating posts.... Done");
 	}
 	
-	public static void generateFriendships()
+	private void generateFriendships()
 	{
 		System.out.println("Creating friendships....");
-		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-				PreparedStatement insertFriendshipStatement = conn.prepareStatement(INSERT_FRIENDSHIP);
+		try (
+				PreparedStatement insertFriendshipStatement = conn.prepareStatement(Queries.INSERT_FRIENDSHIP.getQuery());
 				Statement countUsersStatement = conn.createStatement();
-				PreparedStatement getUserFriendships = conn.prepareStatement(GET_USER_FRIENDSHIPS);
+				PreparedStatement getUserFriendships = conn.prepareStatement(Queries.GET_USER_FRIENDSHIPS.getQuery());
 				) {
 			
 			
-			ResultSet usersCountSet = countUsersStatement.executeQuery(GET_USERS_COUNT);
+			ResultSet usersCountSet = countUsersStatement.executeQuery(Queries.GET_USERS_COUNT.getQuery());
 			usersCountSet.first();
 			int usersCount = usersCountSet.getInt("users_count");
 			countUsersStatement.close();
@@ -270,11 +249,11 @@ public class DBHandler {
 		System.out.println("Creating friendships finished");
 	}
 	
-	public static void generateUsers()
+	private void generateUsers()
 	{
 		System.out.println("Creating users....");
-		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-				PreparedStatement statement = conn.prepareStatement(INSERT_USER);) {
+		try (
+				PreparedStatement statement = conn.prepareStatement(Queries.INSERT_USER.getQuery());) {
 			
 			try {
 				FileReader fileReader = new FileReader("user_names.csv");
@@ -309,18 +288,17 @@ public class DBHandler {
 		}
 		System.out.println("Creating users finished");
 	}
-
-	public static void createTables() {
+	
+	private void createTables() {
 		System.out.println("Creating tables...");
-		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-				Statement statement = conn.createStatement();) {
+		try (Statement statement = conn.createStatement();) {
 			
-			statement.executeUpdate(DROP_TABLES);
+			statement.executeUpdate(Queries.DROP_TABLES.getQuery());
 			
-			statement.executeUpdate(CREATE_USERS_TABLE);
-			statement.executeUpdate(CREATE_FRIENDSHIPS_TABLE);
-			statement.executeUpdate(CREATE_POSTS_TABLE);
-			statement.executeUpdate(CREATE_LIKES_TABLE);
+			statement.executeUpdate(Queries.CREATE_USERS_TABLE.getQuery());
+			statement.executeUpdate(Queries.CREATE_FRIENDSHIPS_TABLE.getQuery());
+			statement.executeUpdate(Queries.CREATE_POSTS_TABLE.getQuery());
+			statement.executeUpdate(Queries.CREATE_LIKES_TABLE.toString());
 			
 			statement.close();
 			conn.close();
@@ -331,6 +309,7 @@ public class DBHandler {
 		}
 		System.out.println("Creating tables finished");
 	}
+	
 	
 	private static java.sql.Timestamp getRandomDate(int startYear, int endYear)
 	{		
@@ -364,4 +343,5 @@ public class DBHandler {
 	private static int randBetween(int start, int end) {
         return start + (int)Math.round(Math.random() * (end - start));
     }
+
 }
