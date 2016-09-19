@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -27,9 +28,15 @@ public class DBHandler {
 	
 	public void init() {
 		conn = null;
-		try (Connection cn = DriverManager.getConnection(URL, USER, PASSWORD);) {
-			conn = cn;			
+		try {
+			conn = DriverManager.getConnection(URL, USER, PASSWORD);;			
 		} catch (SQLException e) {
+			try {
+				conn.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 	}
@@ -43,6 +50,30 @@ public class DBHandler {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public boolean checkTablesExists() {
+		try {
+			DatabaseMetaData databaseMetaData = conn.getMetaData();
+			ResultSet result = databaseMetaData.getTables(null, null, null, null);
+
+			while (result.next()) {
+				String tableName = result.getString(3);
+
+				if(tableName.equals("friendships") || tableName.equals("likes") || tableName.equals("posts") || tableName.equals("users"))
+				{
+					result.close();
+					return true;
+				}
+			}
+			
+			result.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 	
 	public void generateTables()
@@ -122,7 +153,6 @@ public class DBHandler {
 			
 			postTimestampStmt.close();
 			insertLike.close();
-			conn.close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -165,7 +195,6 @@ public class DBHandler {
 			System.out.println("Trying to execute batch...   Done");
 
 			insertPost.close();
-			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -240,7 +269,6 @@ public class DBHandler {
 			
 			getUserFriendships.close();
 			insertFriendshipStatement.close();
-			conn.close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -280,7 +308,6 @@ public class DBHandler {
 			}
 			
 			statement.close();
-			conn.close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -301,7 +328,6 @@ public class DBHandler {
 			statement.executeUpdate(Queries.CREATE_LIKES_TABLE.toString());
 			
 			statement.close();
-			conn.close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
