@@ -29,7 +29,6 @@ public class Runner {
 				handler.generateTables();
 			}
 		}
-		//handler.generateTables();
 		handler.close();
 	}
 
