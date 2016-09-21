@@ -50,7 +50,26 @@ public enum Queries {
 	
 	GET_POST_TIMESTAMP ("SELECT timestamp FROM posts WHERE id = ?"),
 	
-	INSERT_LIKE ("INSERT INTO likes VALUES(?, ?, ?);");
+	INSERT_LIKE ("INSERT INTO likes VALUES(?, ?, ?);"),
+	
+	GET_USERS_DATA (" select * from \r\n" + 
+			" (\r\n" + 
+			"	select ulc.user_id, ulc.user_name, ulc.user_surname, ulc.likes_count, COUNT(ulc.user_id) as friends_count \r\n" + 
+			"	from \r\n" + 
+			"	(\r\n" + 
+			"		select u.id as user_id, u.name as user_name, u.surname as user_surname, \r\n" + 
+			"		COUNT(u.id) as likes_count\r\n" + 
+			"		from posts as p\r\n" + 
+			"		join likes as l on l.postid = p.id\r\n" + 
+			"		join users as u on p.userId = u.id\r\n" + 
+			"		where l.timestamp >= '2015-05-01 00:00:00' and l.timestamp <= '2015-05-31 23:59:59'\r\n" + 
+			"		group by u.id\r\n" + 
+			"	) as ulc\r\n" + 
+			"	join friendships as f on f.userid1 = ulc.user_id\r\n" + 
+			"	group by ulc.user_id\r\n" + 
+			" ) as result\r\n" + 
+			" where result.likes_count > 20 and result.friends_count > 100\r\n" + 
+			" order by result.likes_count desc, result.friends_count desc");
 	
 	private final String query;
 	

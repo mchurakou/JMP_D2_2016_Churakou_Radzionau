@@ -12,9 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -83,6 +85,32 @@ public class DBHandler {
 		generateFriendships();
 		generatePosts();
 		generateLikes();
+	}
+	
+	public List<String> getUsersData() {
+		List<String> result = new ArrayList<String>();
+		
+		try (Statement st = conn.createStatement();)
+		{
+			
+			ResultSet users = st.executeQuery(Queries.GET_USERS_DATA.getQuery());
+			
+			while(users.next())
+			{
+				String tmp = "";
+				tmp += users.getString("user_name") + " " + users.getString("user_surname") + " | ";
+				tmp += "Likes: " + users.getInt("likes_count") + ", " + "Friends: " + users.getInt("friends_count");
+				
+				result.add(tmp);
+			}
+			
+			st.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	private void generateLikes()
