@@ -30,6 +30,12 @@ public class Runner {
 				handler.generateTables();
 			}
 		}
+		else
+		{
+			System.out.println("Generating tables... ");
+			handler.generateTables();
+			System.out.println("Generating tables... Done");
+		}
 		
 		System.out.println("Show users with more than 20 likes in 2015 and more than 100 friends? (y/n)");
 		try {

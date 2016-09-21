@@ -36,21 +36,21 @@ public enum Queries {
 			+ "PRIMARY KEY (postid, userid)"
 			+ ");"),
 	
-	INSERT_USER ("INSERT INTO users (name, surname, birthdate) VALUES(?, ?, ?);"),
+	INSERT_USER ("INSERT INTO users (name, surname, birthdate) VALUES(?, ?, ?)"),
 	
-	INSERT_FRIENDSHIP ("INSERT INTO friendships values(?, ?, ?);"),
+	INSERT_FRIENDSHIP ("INSERT INTO friendships values(?, ?, ?)"),
 	
 	GET_USERS_COUNT ("SELECT COUNT(*) as users_count FROM users;"),
 	
 	GET_USER_FRIENDSHIPS ("SELECT userid2 AS friend FROM friendships WHERE userid1 = ?;"),
 	
-	INSERT_POST ("INSERT INTO posts(userId, text, timestamp) VALUES(?, ?, ?);"),
+	INSERT_POST ("INSERT INTO posts(userId, text, timestamp) VALUES(?, ?, ?)"),
 	
 	GET_POSTS_COUNT ("SELECT COUNT(*) as posts_count from posts;"),
 	
 	GET_POST_TIMESTAMP ("SELECT timestamp FROM posts WHERE id = ?"),
 	
-	INSERT_LIKE ("INSERT INTO likes VALUES(?, ?, ?);"),
+	INSERT_LIKE ("INSERT INTO likes VALUES(?, ?, ?)"),
 	
 	GET_USERS_DATA (" select * from \r\n" + 
 			" (\r\n" + 

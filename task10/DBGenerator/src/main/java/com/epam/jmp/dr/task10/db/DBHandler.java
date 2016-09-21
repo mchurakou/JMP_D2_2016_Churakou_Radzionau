@@ -24,7 +24,13 @@ public class DBHandler {
 	
 	private static String USER = "root";
 	private static String PASSWORD = "root";
-	private static String URL = "jdbc:mysql://localhost:3306/task10";
+	private static String URL = "jdbc:mysql://localhost:3306/task10?rewriteBatchedStatements=true";
+	
+	private static int EXECUTE_INSERT_BATCH_COUNT = 1000;
+	
+	private static int LIKES_AMOUNT = 800000;
+	private static int POSTS_AMOUNT = 150000;
+	private static int USER_MAX_FRIENDSHIPS = 150;
 	
 	private Connection conn;
 	
@@ -141,7 +147,7 @@ public class DBHandler {
 				postLikes.put(pId, new HashSet<Integer>());
 			}
 			
-			for(int i = 0; i < 800000; i++)
+			for(int i = 0; i < LIKES_AMOUNT; i++)
 			{
 				int userid = randBetween(1, usersCount);
 				int postId = randBetween(1, postsCount);
@@ -150,7 +156,7 @@ public class DBHandler {
 			}
 			System.out.println("Generating likes map.... Done");
 			
-			System.out.println("Creating likes batch....");
+			System.out.println("Inserting likes....");
 			for (Map.Entry<Integer, Set<Integer>> entry : postLikes.entrySet()) {
 				int postId = entry.getKey();
 				Set<Integer> likesUsersIds = entry.getValue();
@@ -160,6 +166,7 @@ public class DBHandler {
 				postTimestampSet.first();
 				Timestamp postCreationTimestamp = postTimestampSet.getTimestamp("timestamp");
 				
+				int counter = 0;
 				for(Integer userId : likesUsersIds)
 				{
 					
@@ -171,13 +178,18 @@ public class DBHandler {
 					
 					insertLike.addBatch();
 					
+					counter++;
+					if(counter == EXECUTE_INSERT_BATCH_COUNT)
+					{
+						counter = 0;
+						insertLike.executeBatch();
+					}
+					
 				}
 			}
-			System.out.println("Creating likes batch.... Done");
 			
-			System.out.println("Trying to execute batch...");
 			insertLike.executeBatch();
-			System.out.println("Trying to execute batch...   Done");
+			System.out.println("Inserting likes...   Done");
 			
 			postTimestampStmt.close();
 			insertLike.close();
@@ -203,7 +215,8 @@ public class DBHandler {
 			int usersCount = usersCountSet.getInt("users_count");
 			countUsersStatement.close();
 			
-			System.out.println("Creating batch....");
+			int counter = 0;
+			System.out.println("Inserting posts....");
 			for(int i = 0; i < 150000; i++)
 			{
 				int userId = randBetween(1, usersCount);
@@ -215,12 +228,17 @@ public class DBHandler {
 				insertPost.setTimestamp(3, timestamp);
 				
 				insertPost.addBatch();
+				
+				counter++;
+				if(counter == EXECUTE_INSERT_BATCH_COUNT)
+				{
+					counter = 0;
+					insertPost.executeBatch();
+				}
 			}
-			System.out.println("Creating batch.... Done");
-			
-			System.out.println("Trying to execute batch...");
+
 			insertPost.executeBatch();
-			System.out.println("Trying to execute batch...   Done");
+			System.out.println("Inserting posts.... Done");
 
 			insertPost.close();
 		} catch (SQLException e) {
@@ -259,7 +277,7 @@ public class DBHandler {
 			for(int userid1 = 1; userid1 <= usersCount; userid1++)
 			{
 				//int friendsAmount = randBetween(0, usersCount);
-				int friendsAmount = randBetween(1, 150);
+				int friendsAmount = randBetween(1, USER_MAX_FRIENDSHIPS);
 				for(int i = 0; i < friendsAmount; i++)
 				{
 					int userid2 = randBetween(1, usersCount);
@@ -271,7 +289,10 @@ public class DBHandler {
 					friendships.get(userid2).add(userid1);
 				}
 			}
+			System.out.println("Adding friendships pairs...  Done");
 			
+			System.out.println("Inserting friendships...");
+			int counter = 0;
 			for (Map.Entry<Integer, Set<Integer>> entry : friendships.entrySet()) {
 				int user1 = entry.getKey();
 				Set<Integer> friends = entry.getValue();
@@ -286,13 +307,18 @@ public class DBHandler {
 					insertFriendshipStatement.setTimestamp(3, timestamp);
 					
 					insertFriendshipStatement.addBatch();
+					
+					counter++;
+					if(counter == EXECUTE_INSERT_BATCH_COUNT)
+					{
+						counter = 0;
+						insertFriendshipStatement.executeBatch();
+					}
 				}
 			}
-			System.out.println("Adding friendships pairs...  Done");
 			
-			System.out.println("Trying to execute batch...");
+			System.out.println("Inserting friendships... Done");
 			insertFriendshipStatement.executeBatch();
-			System.out.println("Trying to execute batch...   Done");
 			
 			
 			getUserFriendships.close();
