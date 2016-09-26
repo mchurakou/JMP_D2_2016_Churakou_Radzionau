@@ -3,55 +3,80 @@ Installation:
 
 Soft: Apache Web Server, Apache Tomcat, Maven
 
-install maven
+1. install maven
 
-install tomcat
+2. install tomcat
 
-install Apache Web Server
+3. install Apache Web Server
 
-Add an user with roles manager-gui and manager-script to tomcat-users:
-	edit %TOMCAT_PATH%/conf/tomcat-users.xml
-	add:
-	<tomcat-users>
-		<role rolename="manager-gui"/>
-		<role rolename="manager-script"/>
-		<user username="%username%" password="%password%" roles="manager-gui,manager-script" />
+4. Add an user with roles manager-gui and manager-script to tomcat-users:
+	4.1 edit %TOMCAT_PATH%/conf/tomcat-users.xml
+		add:
+		<tomcat-users>
+			<role rolename="manager-gui"/>
+			<role rolename="manager-script"/>
+			<user username="%username%" password="%password%" roles="manager-gui,manager-script" />
 		
-configure maven with tomcat user credentials:
-	edit %MAVEN_PATH%/conf/settings.xml
-	add:
-	<?xml version="1.0" encoding="UTF-8"?>
-	<settings ...>
-		<servers>
+5. configure maven with tomcat user credentials:
+	5.1 edit %MAVEN_PATH%/conf/settings.xml
+		add:
+		<?xml version="1.0" encoding="UTF-8"?>
+		<settings ...>
+			<servers>
 
-			<server>
-				<id>TomcatServer</id>
-				<username>%tomcat_username%</username>
-				<password>%tomcat_password%</password>
-			</server>
+				<server>
+					<id>TomcatServer</id>
+					<username>%tomcat_username%</username>
+					<password>%tomcat_password%</password>
+				</server>
 			
 			
 
-configure Apache Web Server:
+6. configure Apache Web Server:
 
-	download apropriate mod_jk extesion from http://tomcat.apache.org/download-connectors.cgi
-	copy mod_jk.so to %APACHE_PATH%/modules
-	create worker.properties file in %APACHE_PATH%/conf directory
-	put next lines in worker.properties file:
+	6.1 download apropriate mod_jk extesion from http://tomcat.apache.org/download-connectors.cgi
+	6.2 copy mod_jk.so to %APACHE_PATH%/modules
+	6.3 create worker.properties file in %APACHE_PATH%/conf directory
+	6.4 put next lines in worker.properties file:
 	
-		worker.list=worker1
-		worker.worker1.type=ajp13
-		worker.worker1.host=localhost
-		worker.worker1.port=8009
-		worker.worker1.lbfactor=50
-		worker.worker1.cachesize=10
-		worker.worker1.cache_timeout=600
-		worker.worker1.socket_keepalive=1
-		worker.worker1.recycle_timeout=300
+			worker.list=worker1
+			worker.worker1.type=ajp13
+			worker.worker1.host=localhost
+			worker.worker1.port=8009
+			worker.worker1.lbfactor=50
+			worker.worker1.socket_keepalive=1
 		
-	
+	6.5 add config to load mod_jk to Apache Web Server:
+			edit %APACHE_PATH%/conf/httpd.conf. add:
 			
-run tomcat
+			LoadModule jk_module modules/mod_jk.so
+			JkWorkersFile "conf/worker.properties"
+		
+	6.6 map your app to mod_jk:
+			edit %APACHE_PATH%/conf/httpd.conf. add:
+			
+			JkMount  /task12/ worker1
+		
+	6.7 configure staticsite mapping in Apache Web Server:
+	
+			edit %APACHE_PATH%/conf/httpd.conf. add:
+			
+			Alias /task12 "%PATH_TO_UNPACKED_APPLICATION%/staticsite"
+			<Directory "%PATH_TO_UNPACKED_APPLICATION%/staticsite">
+				Options Indexes MultiViews  
+				AllowOverride None  
+				Require all granted
+			</Directory>
+			
+			for example, if you unpack application to e:/tsk12, then path will be: e:/tsk12/staticsite
+			
+7. run tomcat
+
+8. run install.bat from the application root directory
+
+9. go to http://localhost/task12/
+
+10. enjoy
 
 
 

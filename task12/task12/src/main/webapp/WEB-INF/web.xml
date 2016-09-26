@@ -4,7 +4,17 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>Hello</servlet-name>
+  	<display-name>Hello</display-name>
+  	<description></description>
+  	<servlet-class>com.epam.jmp.dr.task12.Hello</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>Hello</servlet-name>
+  	<url-pattern>/hello</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
-  	<welcome-file>index.jsp</welcome-file>
+  	<welcome-file>index.html</welcome-file>
   </welcome-file-list>
 </web-app>

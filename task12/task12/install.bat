@@ -1,1 +1,1 @@
-mvn clean install tomcat7:deploy
+mvn clean install tomcat7:undeploy tomcat7:deploy
