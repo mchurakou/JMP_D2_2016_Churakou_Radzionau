@@ -28,7 +28,7 @@ public class Hello extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		String name = request.getAttribute("name");
+		String name = (String) request.getParameter("name");
 		String helloStr = "Hello you, " + name + "!";
 		request.setAttribute("helloStr", helloStr);
 		request.getRequestDispatcher("/hello.jsp").forward(request, response);

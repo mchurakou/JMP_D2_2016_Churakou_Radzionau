@@ -56,19 +56,21 @@ Soft: Apache Web Server, Apache Tomcat, Maven
 			edit %APACHE_PATH%/conf/httpd.conf. add:
 			
 			JkMount  /task12/ worker1
+			JkMount  /task12/*.jsp worker1
+			JkMount  /task12/hello worker1
 		
 	6.7 configure staticsite mapping in Apache Web Server:
 	
 			edit %APACHE_PATH%/conf/httpd.conf. add:
 			
-			Alias /task12 "%PATH_TO_UNPACKED_APPLICATION%/staticsite"
-			<Directory "%PATH_TO_UNPACKED_APPLICATION%/staticsite">
+			Alias /task12 "%PATH_TO_APPLICATION_FOLDER%/staticsite"
+			<Directory "%PATH_TO_APPLICATION_FOLDER%/staticsite">
 				Options Indexes MultiViews  
 				AllowOverride None  
 				Require all granted
 			</Directory>
 			
-			for example, if you unpack application to e:/tsk12, then path will be: e:/tsk12/staticsite
+			for example, if you unpack application to e:/tsk12, then path will be: e:/staticsite
 			
 7. run tomcat
 
