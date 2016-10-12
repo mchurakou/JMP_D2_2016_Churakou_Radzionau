@@ -1,0 +1,50 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: "jacoco"
+apply plugin: 'findbugs'
+
+
+repositories {
+   mavenCentral()
+}
+
+dependencies {
+   testCompile group: 'junit', name: 'junit', version: '3.8.1'
+}
+
+test {
+    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/reports/tests/jacoco"
+    }
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+task startTomcat(type:Exec) {
+	workingDir 'e:/programs/apache-tomcat-9.0.0.M10/bin/'
+	executable "cmd"
+	args "startup.bat"
+}
+
+task hello(type: Exec) {
+  executable "cmd"
+  args "-c", "startup.bat"
+}
+
+
+war.dependsOn test, jacocoTestReport, findbugsMain
