@@ -1,10 +1,13 @@
 
 package com.epam.jmp.dr.task17.soap.ws;
 
+import java.util.List;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Action;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
@@ -25,14 +28,170 @@ public interface SOAPWebService {
 
     /**
      * 
+     * @param arg0
      * @return
-     *     returns java.lang.String
+     *     returns boolean
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getString", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetString")
-    @ResponseWrapper(localName = "getStringResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetStringResponse")
-    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getStringRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getStringResponse")
-    public String getString();
+    @RequestWrapper(localName = "updateUser", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.UpdateUser")
+    @ResponseWrapper(localName = "updateUserResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.UpdateUserResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/updateUserRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/updateUserResponse")
+    public boolean updateUser(
+        @WebParam(name = "arg0", targetNamespace = "")
+        User arg0);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "updateTask", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.UpdateTask")
+    @ResponseWrapper(localName = "updateTaskResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.UpdateTaskResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/updateTaskRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/updateTaskResponse")
+    public boolean updateTask(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        Task arg1);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "deleteUser", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.DeleteUser")
+    @ResponseWrapper(localName = "deleteUserResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.DeleteUserResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/deleteUserRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/deleteUserResponse")
+    public boolean deleteUser(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "deleteTask", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.DeleteTask")
+    @ResponseWrapper(localName = "deleteTaskResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.DeleteTaskResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/deleteTaskRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/deleteTaskResponse")
+    public boolean deleteTask(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        int arg1);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "addUser", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.AddUser")
+    @ResponseWrapper(localName = "addUserResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.AddUserResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/addUserRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/addUserResponse")
+    public void addUser(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
+
+    /**
+     * 
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "addTask", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.AddTask")
+    @ResponseWrapper(localName = "addTaskResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.AddTaskResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/addTaskRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/addTaskResponse")
+    public boolean addTask(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        XMLGregorianCalendar arg3);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<com.epam.jmp.dr.task17.soap.ws.User>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getAllUsers", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetAllUsers")
+    @ResponseWrapper(localName = "getAllUsersResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetAllUsersResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getAllUsersRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getAllUsersResponse")
+    public List<User> getAllUsers();
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns com.epam.jmp.dr.task17.soap.ws.User
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getUser", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetUser")
+    @ResponseWrapper(localName = "getUserResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetUserResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getUserRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getUserResponse")
+    public User getUser(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<com.epam.jmp.dr.task17.soap.ws.Task>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getTasks", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetTasks")
+    @ResponseWrapper(localName = "getTasksResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetTasksResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getTasksRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getTasksResponse")
+    public List<Task> getTasks(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns com.epam.jmp.dr.task17.soap.ws.Task
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getTask", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetTask")
+    @ResponseWrapper(localName = "getTaskResponse", targetNamespace = "http://ws.soap.task17.dr.jmp.epam.com/", className = "com.epam.jmp.dr.task17.soap.ws.GetTaskResponse")
+    @Action(input = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getTaskRequest", output = "http://ws.soap.task17.dr.jmp.epam.com/SOAPWebService/getTaskResponse")
+    public Task getTask(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        int arg1);
 
 }

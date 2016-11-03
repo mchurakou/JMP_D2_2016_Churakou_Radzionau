@@ -6,10 +6,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "getString", namespace = "http://ws.soap.task17.dr.jmp.epam.com/")
+@XmlRootElement(name = "addUserResponse", namespace = "http://ws.soap.task17.dr.jmp.epam.com/")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getString", namespace = "http://ws.soap.task17.dr.jmp.epam.com/")
-public class GetString {
+@XmlType(name = "addUserResponse", namespace = "http://ws.soap.task17.dr.jmp.epam.com/")
+public class AddUserResponse {
 
 
 }

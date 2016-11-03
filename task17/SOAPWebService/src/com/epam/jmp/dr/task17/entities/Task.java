@@ -1,6 +1,9 @@
 package com.epam.jmp.dr.task17.entities;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.google.gson.Gson;
 
 public class Task {
 	
@@ -53,5 +56,13 @@ public class Task {
 	public void setDeadLine(Date deadLine) {
 		this.deadLine = deadLine;
 	}
+
+	@Override
+	public String toString() {
+		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", creationDate=" + new SimpleDateFormat("yyyy-MM-dd").format(creationDate)
+				+ ", deadLine=" + new SimpleDateFormat("yyyy-MM-dd").format(deadLine) + "]";
+	}
+	
+	
 
 }

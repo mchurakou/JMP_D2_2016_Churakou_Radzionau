@@ -1,8 +1,13 @@
 package com.epam.jmp.dr.task17.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 public class User {
+	
+	private int nextTaskId = 1;
 	
 	private int id;
 	
@@ -12,7 +17,7 @@ public class User {
 	
 	private String mail;
 	
-	private List<Task> tasks;
+	private List<Task> tasks = new ArrayList<Task>();
 
 	public int getId() {
 		return id;
@@ -49,9 +54,16 @@ public class User {
 	public List<Task> getTasks() {
 		return tasks;
 	}
+	
+	public int getNextTaskId()
+	{
+		return nextTaskId++;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", mail=" + mail + "]";
 
-	public void setTasks(List<Task> tasks) {
-		this.tasks = tasks;
 	}
 
 }
