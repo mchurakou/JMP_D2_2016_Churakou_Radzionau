@@ -1,18 +1,19 @@
-package com.epam.jmp.dr.task17.entities;
+package com.epam.jmp.dr.task17.rest.entities;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class Task {
-
+	
 	private int id;
-
+	
 	private String name;
-
+	
 	private String description;
-
+	
 	private Date creationDate;
-
+	
 	private Date deadLine;
 
 	public int getId() {
@@ -57,9 +58,10 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", creationDate="
-				+ new SimpleDateFormat("yyyy-MM-dd").format(creationDate) + ", deadLine="
-				+ new SimpleDateFormat("yyyy-MM-dd").format(deadLine) + "]";
+		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", creationDate=" + new SimpleDateFormat("yyyy-MM-dd").format(creationDate)
+				+ ", deadLine=" + new SimpleDateFormat("yyyy-MM-dd").format(deadLine) + "]";
 	}
+	
+	
 
 }

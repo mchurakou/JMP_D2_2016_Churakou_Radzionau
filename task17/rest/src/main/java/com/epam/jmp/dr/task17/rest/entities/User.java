@@ -1,4 +1,4 @@
-package com.epam.jmp.dr.task17.entities;
+package com.epam.jmp.dr.task17.rest.entities;
 
 import java.util.ArrayList;
 import java.util.List;

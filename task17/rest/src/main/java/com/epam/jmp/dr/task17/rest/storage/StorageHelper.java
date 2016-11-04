@@ -1,4 +1,4 @@
-package com.epam.jmp.dr.task17.storage;
+package com.epam.jmp.dr.task17.rest.storage;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import com.epam.jmp.dr.task17.entities.Task;
-import com.epam.jmp.dr.task17.entities.User;
+import com.epam.jmp.dr.task17.rest.entities.Task;
+import com.epam.jmp.dr.task17.rest.entities.User;
 
 public class StorageHelper {
 
