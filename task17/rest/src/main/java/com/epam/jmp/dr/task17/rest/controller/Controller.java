@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.epam.jmp.dr.task17.rest.entities.SuperUser;
 import com.epam.jmp.dr.task17.rest.entities.Task;
 import com.epam.jmp.dr.task17.rest.entities.User;
 import com.epam.jmp.dr.task17.rest.storage.JPAService;
@@ -53,16 +54,16 @@ public class Controller {
 	}
 	
 	//@RequestMapping(value = "/task/user/{userId}", method = RequestMethod.GET, headers = "Accept=application/json")
-	@RequestMapping(value = "/user/{userId}/tasks", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/user/{userId}/task", method = RequestMethod.GET, headers = "Accept=application/json")
 	public List<Task> getTasks(@PathVariable int userId) {
 
-		return StorageHelper.getInstance().getTasks(userId);
+		return service.getAllTasks(userId);
 	}
 
 	@RequestMapping(value = "/user/{userId}/task/{taskId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public Task getTask(@PathVariable int taskId, @PathVariable int userId) {
 
-		return StorageHelper.getInstance().getTask(taskId, userId);
+		return service.getTask(taskId);
 	}
 	
 	//@RequestMapping(value = "/tasks/user/{userId}", method = RequestMethod.POST, headers = "Accept=application/json")
@@ -77,7 +78,8 @@ public class Controller {
 	@RequestMapping(value = "/user/{userId}/task", method = RequestMethod.PUT, headers = "Accept=application/json")
 	public boolean updateTask(@PathVariable int userId, @RequestBody Task task) {
 
-		return StorageHelper.getInstance().updateTask(userId, task);
+		service.updateTask(task);
+		return true;
 	}
 
 	
@@ -85,11 +87,42 @@ public class Controller {
 	@RequestMapping(value = "/user/{userId}/task/{taskId}", method = RequestMethod.DELETE, headers = "Accept=application/json")
 	public boolean deleteTask(@PathVariable int userId, @PathVariable int taskId) {
 
-		return StorageHelper.getInstance().deleteTask(userId, taskId);
+		service.deleteTask(userId, taskId);
+		return true;
 	}
 
 	
+	@RequestMapping(value = "/superuser", method = RequestMethod.GET, headers = "Accept=application/json")
+	public List<SuperUser> getAllSuperUsers() {
 
+		return service.getAllSUsers();
+	}
+
+	@RequestMapping(value = "/superuser/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public SuperUser getSuperUser(@PathVariable int id) {
+
+		return service.getSUser(id);
+	}
+
+	@RequestMapping(value = "/superuser", method = RequestMethod.PUT, headers = "Accept=application/json")
+	public boolean updateSuperUser(@RequestBody SuperUser user) {
+
+		service.updateSUser(user);
+		return true;
+	}
+
+	@RequestMapping(value = "/superuser", method = RequestMethod.POST, headers = "Accept=application/json")
+	public void addSuperUser(@RequestBody SuperUser user) {
+
+		service.addSUser(user);
+	}
+	
+	@RequestMapping(value = "/superuser/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public boolean deleteSuperUser(@PathVariable int id) {
+
+		service.deleteSUser(id);
+		return true;
+	}
 	
 	
 

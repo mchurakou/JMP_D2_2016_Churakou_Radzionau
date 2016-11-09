@@ -6,12 +6,20 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/*@NamedQueries({
+    @NamedQuery(
+        name = "get_tasks_for_user",
+        query = "select u.tasks from User u where u.id = :id"
+    )
+})*/
 @Entity
 @Table(name = "task")
 public class Task {
