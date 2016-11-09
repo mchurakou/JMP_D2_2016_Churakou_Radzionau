@@ -19,7 +19,7 @@ public class StorageHelper {
 	private static StorageHelper instance;
 
 	private StorageHelper() {
-		users = new ArrayList<User>();
+		/*users = new ArrayList<User>();
 
 		User u = new User();
 
@@ -56,7 +56,7 @@ public class StorageHelper {
 
 		u.getTasks().add(t);
 
-		users.add(u);
+		users.add(u);*/
 
 	}
 
@@ -135,7 +135,7 @@ public class StorageHelper {
 	}
 
 	public boolean addTask(int userId, String taskName, String taskDescription, Date deadLine) {
-		for (User u : users) {
+		/*for (User u : users) {
 			if (u.getId() == userId) {
 				Task t = new Task();
 				t.setId(u.getNextTaskId());
@@ -146,7 +146,7 @@ public class StorageHelper {
 				u.getTasks().add(t);
 				return true;
 			}
-		}
+		}*/
 		return false;
 	}
 

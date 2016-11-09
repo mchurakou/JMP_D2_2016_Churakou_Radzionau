@@ -1,19 +1,36 @@
 package com.epam.jmp.dr.task17.rest.entities;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "task")
 public class Task {
 	
+	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
 	private int id;
 	
 	private String name;
 	
 	private String description;
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "creation_date")
 	private Date creationDate;
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "dead_line")
 	private Date deadLine;
 
 	public int getId() {
@@ -55,13 +72,6 @@ public class Task {
 	public void setDeadLine(Date deadLine) {
 		this.deadLine = deadLine;
 	}
-
-	@Override
-	public String toString() {
-		return "Task [id=" + id + ", name=" + name + ", description=" + description + ", creationDate=" + new SimpleDateFormat("yyyy-MM-dd").format(creationDate)
-				+ ", deadLine=" + new SimpleDateFormat("yyyy-MM-dd").format(deadLine) + "]";
-	}
-	
 	
 
 }

@@ -3,11 +3,22 @@ package com.epam.jmp.dr.task17.rest.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "user")
 public class User {
 	
-	private int nextTaskId = 1;
-	
+	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
 	private int id;
 	
 	private String name;
@@ -16,6 +27,7 @@ public class User {
 	
 	private String mail;
 	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Task> tasks = new ArrayList<Task>();
 
 	public int getId() {
@@ -54,15 +66,5 @@ public class User {
 		return tasks;
 	}
 	
-	public int getNextTaskId()
-	{
-		return nextTaskId++;
-	}
-	
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", mail=" + mail + "]";
-
-	}
 
 }
