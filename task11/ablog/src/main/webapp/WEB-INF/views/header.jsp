@@ -5,4 +5,12 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
-<div>${headerMsg}</div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="">Awesome Blog</a>
+			</div>
+		</div>
+	</div>
+</nav>

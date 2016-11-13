@@ -6,3 +6,11 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
 <div>${helloBodyMsg}</div>
+
+<div>${user.login}</div>
+<div>${user.name}</div>
+<div>${user.email}</div>
+<div>${user.password}</div>
+<div>${user.userType}</div>
+
+<button class="btn btn-default" type="submit">Button</button>

@@ -7,6 +7,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-	 <context:component-scan base-package="com.epam.jmp.dr.task11.ablog.service" /> 
+	 <import resource="data-source.xml" />
+	<context:component-scan base-package="com.epam.jmp.dr.task11.ablog" />
 
 </beans>

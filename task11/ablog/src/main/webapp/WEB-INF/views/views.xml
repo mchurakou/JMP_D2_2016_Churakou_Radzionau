@@ -6,5 +6,6 @@
 <tiles-definitions>
 	<definition extends="default" name="hello">
 		<put-attribute name="body" value="/WEB-INF/views/hello.jsp"/>
+		<put-attribute name="pageTitle" value="Awesome Blog"/>
 	</definition>
 </tiles-definitions>
