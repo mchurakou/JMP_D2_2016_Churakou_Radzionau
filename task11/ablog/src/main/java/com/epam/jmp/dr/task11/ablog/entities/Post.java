@@ -34,22 +34,21 @@ public class Post {
 	private String title;
 	
 	@Lob
-	@Column(nullable=false)
 	private String text;
 	
 	@Column(name = "creation_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id", foreignKey=@ForeignKey(name="post_user_id_fk"))
 	private User autor;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Image> images = new ArrayList<Image>();
+	private List<Image> images;// = new ArrayList<Image>();
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Comment> comments = new ArrayList<Comment>();
+	private List<Comment> comments;// = new ArrayList<Comment>();
 
 	public int getId() {
 		return id;

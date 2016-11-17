@@ -9,8 +9,35 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="">Awesome Blog</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/">Awesome Blog</a>
 			</div>
+			<c:if test="${currUser != null}">
+			<ul class="nav navbar-nav navbar-left">
+				<li>
+					<a href="${pageContext.request.contextPath}/post/create">New Post</a>
+				</li>
+			</ul>
+			</c:if>
+			<ul class="nav navbar-nav navbar-right">
+			<c:choose>
+				<c:when test="${currUser != null}">
+					<li>
+						<p class="navbar-text">Hello <a href="${pageContext.request.contextPath}/user/${currUser.login}">${currUser.login}</a>!</p>
+					</li>
+					<li>
+						<a href="${pageContext.request.contextPath}/logout">Log out</a>
+					</li>
+				</c:when>
+				<c:otherwise>
+					<li>
+						<a href="${pageContext.request.contextPath}/login">Log In</a>
+					</li>
+					<li>
+						<a href="${pageContext.request.contextPath}/register">Register</a>
+					</li>
+				</c:otherwise>
+			</c:choose>
+			</ul>
 		</div>
 	</div>
 </nav>

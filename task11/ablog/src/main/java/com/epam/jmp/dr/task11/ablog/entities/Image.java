@@ -1,6 +1,7 @@
 package com.epam.jmp.dr.task11.ablog.entities;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -28,7 +29,7 @@ public class Image {
 	
 	private String description;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="post_id", foreignKey=@ForeignKey(name="post_id_fk"))
 	private Post post;
 

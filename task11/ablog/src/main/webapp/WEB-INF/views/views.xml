@@ -4,8 +4,40 @@
 "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-	<definition extends="default" name="hello">
+	<!-- <definition extends="default" name="hello">
 		<put-attribute name="body" value="/WEB-INF/views/hello.jsp"/>
 		<put-attribute name="pageTitle" value="Awesome Blog"/>
+	</definition> -->
+	<definition extends="default" name="error">
+		<put-attribute name="body" value="/WEB-INF/views/error.jsp"/>
+		<put-attribute name="pageTitle" value="Error"/>
+	</definition>
+	<definition extends="default" name="loginForm">
+		<put-attribute name="body" value="/WEB-INF/views/user/loginForm.jsp"/>
+		<put-attribute name="pageTitle" value="Login"/>
+	</definition>
+	<definition extends="default" name="registration">
+		<put-attribute name="body" value="/WEB-INF/views/user/registrationForm.jsp"/>
+		<put-attribute name="pageTitle" value="Registration"/>
+	</definition>
+	<definition extends="default" name="home">
+		<put-attribute name="body" value="/WEB-INF/views/home.jsp"/>
+		<put-attribute name="pageTitle" value="Awesome Blog"/>
+	</definition>
+	<definition extends="default" name="userInfo">
+		<put-attribute name="body" value="/WEB-INF/views/user/userInfo.jsp"/>
+		<put-attribute name="pageTitle" value="User Info"/>
+	</definition>
+	<definition extends="default" name="editUserInfo">
+		<put-attribute name="body" value="/WEB-INF/views/user/editUserForm.jsp"/>
+		<put-attribute name="pageTitle" value="Edit User Info"/>
+	</definition>
+	<definition extends="default" name="createPost">
+		<put-attribute name="body" value="/WEB-INF/views/post/createPost.jsp"/>
+		<put-attribute name="pageTitle" value="New Post"/>
+	</definition>
+	<definition extends="default" name="viewPost">
+		<put-attribute name="body" value="/WEB-INF/views/post/viewPost.jsp"/>
+		<put-attribute name="pageTitle" value="Post"/>
 	</definition>
 </tiles-definitions>

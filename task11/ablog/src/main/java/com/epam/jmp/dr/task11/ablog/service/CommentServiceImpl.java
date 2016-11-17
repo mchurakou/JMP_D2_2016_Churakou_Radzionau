@@ -33,4 +33,8 @@ public class CommentServiceImpl implements CommentService {
 		return Lists.newArrayList(repo.findByPostOrderByDateDesc(post));
 	}
 
+	public Comment save(Comment comment) {
+		return repo.save(comment);
+	}
+
 }

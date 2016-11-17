@@ -2,6 +2,7 @@ package com.epam.jmp.dr.task11.ablog.entities;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -17,7 +18,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "IMAGE")
+@Table(name = "COMMENT")
 public class Comment {
 	
 	@Id
@@ -26,18 +27,17 @@ public class Comment {
 	private int id;
 	
 	@Lob
-	@Column(nullable=false)
 	private String text;
 	
 	@Column(name = "date")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id", foreignKey=@ForeignKey(name="user_id_fk"))
 	private User autor;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="post_id", foreignKey=@ForeignKey(name="post_id_fk"))
 	private Post post;
 

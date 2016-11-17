@@ -11,5 +11,7 @@ public interface CommentService {
 	List<Comment> findUserComments(User user);
 	
 	List<Comment> findPostComments(Post post);
+	
+	Comment save(Comment comment);
 
 }
