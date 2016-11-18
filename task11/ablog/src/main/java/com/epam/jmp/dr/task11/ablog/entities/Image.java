@@ -29,7 +29,7 @@ public class Image {
 	
 	private String description;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne//(cascade = CascadeType.ALL)
 	@JoinColumn(name="post_id", foreignKey=@ForeignKey(name="post_id_fk"))
 	private Post post;
 

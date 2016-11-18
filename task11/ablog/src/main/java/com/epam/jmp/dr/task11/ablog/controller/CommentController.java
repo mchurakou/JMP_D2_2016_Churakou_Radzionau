@@ -38,6 +38,31 @@ public class CommentController {
 		this.postService = postService;
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, path="/post/{postId}/comment/{commentId}/delete")
+	public String deleteComment(@PathVariable Integer postId, @PathVariable Integer commentId, Model model, HttpServletRequest httpServletRequest)
+	{
+		List<String> errors = new ArrayList<String>();
+		User currUser = (User) httpServletRequest.getSession().getAttribute("currUser");
+		if(currUser == null)
+		{
+			errors.add("Please login to delete comments");
+			model.addAttribute("errors", errors);
+			return "error";
+		}
+		
+		Comment comment = commentService.findComment(commentId);
+		if(!comment.getAutor().getLogin().equals(currUser.getLogin()))
+		{
+			errors.add("You can delete only your comments");
+			model.addAttribute("errors", errors);
+			return "error";
+		}
+		
+		commentService.delete(comment);
+		
+		return "redirect:/post/" + postId;
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, path="/post/{postId}/comment")
 	public String createComment(@PathVariable Integer postId, Model model, HttpServletRequest httpServletRequest, @RequestParam(value="text", required=true) String text)
 	{
@@ -69,10 +94,6 @@ public class CommentController {
 			
 			
 			Comment newComment = commentService.save(comment);
-			/*post.getComments().add(newComment);
-			currUser.getComments().add(newComment);
-			postService.save(post);
-			userService.save(currUser);*/
 		}
 		
 		

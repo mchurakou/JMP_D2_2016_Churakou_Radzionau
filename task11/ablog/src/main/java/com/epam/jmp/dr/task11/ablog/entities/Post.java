@@ -40,14 +40,14 @@ public class Post {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne//(cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id", foreignKey=@ForeignKey(name="post_user_id_fk"))
 	private User autor;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
 	private List<Image> images;// = new ArrayList<Image>();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post" )
 	private List<Comment> comments;// = new ArrayList<Comment>();
 
 	public int getId() {

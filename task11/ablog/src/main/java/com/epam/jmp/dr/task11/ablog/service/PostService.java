@@ -14,5 +14,7 @@ public interface PostService {
 	Post findById(Integer id);
 	
 	Post save(Post post);
+	
+	void delete(Integer id);
 
 }

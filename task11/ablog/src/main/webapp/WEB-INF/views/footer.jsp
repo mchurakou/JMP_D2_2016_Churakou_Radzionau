@@ -16,3 +16,7 @@
 
 <script src="${jQueryJs}"></script>
 <script src="${bootstrapJs}"></script>
+
+<script>
+$('[data-toggle="tooltip"]').tooltip();
+</script>

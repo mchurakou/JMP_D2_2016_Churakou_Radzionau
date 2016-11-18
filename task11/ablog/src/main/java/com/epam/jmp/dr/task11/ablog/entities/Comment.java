@@ -33,11 +33,11 @@ public class Comment {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne//(cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id", foreignKey=@ForeignKey(name="user_id_fk"))
 	private User autor;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne//(cascade = CascadeType.ALL)
 	@JoinColumn(name="post_id", foreignKey=@ForeignKey(name="post_id_fk"))
 	private Post post;
 

@@ -49,10 +49,10 @@ public class User {
 	@Basic(fetch=FetchType.LAZY)
 	private byte[] avatar;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy= "autor")
 	private List<Post> posts = new ArrayList<Post>();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy= "autor")
 	private List<Comment> comments = new ArrayList<Comment>();
 
 	public int getId() {

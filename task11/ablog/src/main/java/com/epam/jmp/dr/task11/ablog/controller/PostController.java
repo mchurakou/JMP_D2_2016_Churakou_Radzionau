@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.epam.jmp.dr.task11.ablog.entities.Comment;
 import com.epam.jmp.dr.task11.ablog.entities.Image;
 import com.epam.jmp.dr.task11.ablog.entities.Post;
 import com.epam.jmp.dr.task11.ablog.entities.User;
@@ -34,6 +35,31 @@ public class PostController {
 
 	public void setPostService(PostService postService) {
 		this.postService = postService;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, path="/{id}/delete")
+	public String deletePost(@PathVariable Integer id, Model model, HttpServletRequest httpServletRequest)
+	{
+		List<String> errors = new ArrayList<String>();
+		User currUser = (User) httpServletRequest.getSession().getAttribute("currUser");
+		if(currUser == null)
+		{
+			errors.add("Please login to delete posts");
+			model.addAttribute("errors", errors);
+			return "error";
+		}
+		
+		Post post = postService.findById(id);
+		if(!post.getAutor().getLogin().equals(currUser.getLogin()))
+		{
+			errors.add("You can delete only your posts");
+			model.addAttribute("errors", errors);
+			return "error";
+		}
+		
+		postService.delete(id);
+		
+		return "redirect:/";
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path="/{id}")
@@ -112,7 +138,7 @@ public class PostController {
 		
 		Post newPost = postService.save(post);
 		
-		return "redirect:/";
+		return "redirect:/post/" + newPost.getId();
 	}
 
 }

@@ -13,5 +13,9 @@ public interface CommentService {
 	List<Comment> findPostComments(Post post);
 	
 	Comment save(Comment comment);
+	
+	void delete(Comment comment);
+	
+	Comment findComment(Integer id);
 
 }

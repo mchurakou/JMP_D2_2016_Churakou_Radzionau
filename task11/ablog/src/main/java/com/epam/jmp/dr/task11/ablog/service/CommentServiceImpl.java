@@ -37,4 +37,12 @@ public class CommentServiceImpl implements CommentService {
 		return repo.save(comment);
 	}
 
+	public void delete(Comment comment) {
+		repo.delete(comment);	
+	}
+
+	public Comment findComment(Integer id) {
+		return repo.findOne(id);
+	}
+
 }

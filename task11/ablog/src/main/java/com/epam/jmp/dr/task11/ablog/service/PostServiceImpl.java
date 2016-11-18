@@ -40,4 +40,9 @@ public class PostServiceImpl implements PostService {
 		return repo.save(post);
 	}
 
+	public void delete(Integer id) {
+		repo.delete(id);
+		
+	}
+
 }
